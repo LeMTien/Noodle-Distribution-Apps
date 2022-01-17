@@ -4,13 +4,7 @@ import { useFonts } from 'expo-font';
 import { Video } from 'expo-av';
 const Error = (props) => {
     const {navigation} =props
-    const [loaded] = useFonts({
-        Nexa: require('../../assets/fonts/SVN-Nexa.ttf'),
-        Nunito: require('../../assets/fonts/Nunito.ttf')
-      });
-      if (!loaded) {
-        return null;
-      }
+    
     return (
         
         <ImageBackground 

@@ -1,16 +1,94 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, ImageBackground, Image, Pressable } from 'react-native'
 import { useFonts } from 'expo-font';
 import { Video } from 'expo-av';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import {getAllNoodleData} from '../redux/API'
+import actions from '../redux/actions/action';
+import { useDispatch, useSelector } from 'react-redux';
+
 const Welcome = (props) => {
     const {navigation}=props;
-    const [loaded] = useFonts({
-        Nexa: require('../../assets/fonts/SVN-Nexa.ttf'),
-        Nunito: require('../../assets/fonts/Nunito.ttf')
-      });
-      if (!loaded) {
-        return null;
+    const dispatch = useDispatch();
+    const noodle_reducer = useSelector(state => state.noodleReducer)
+
+    useEffect(() =>{
+        dispatch(actions.getAllNoodleRequest)
+        console.log(noodle_reducer)
+    },[])
+    const [hasPermission, setHasPermission] = useState(null);
+    const [scanned, setScanned] = useState(false);
+
+    const askForCameraPermission = () =>{
+        (async () => {
+            const { status } = await BarCodeScanner.requestPermissionsAsync();
+            setHasPermission(status === 'granted');
+          })();
+    }
+        
+    
+      const handleBarCodeScanned = ({ type, data }) => {
+        setScanned(true);
+        navigation.replace('Information', { id: data })
+      };
+    
+      if (hasPermission === null) {
+        return <Text>Requesting for camera permission</Text>;
       }
+
+      if (hasPermission === true) {
+        return (
+            <ImageBackground 
+        style={styles.container}
+        source={require('../sources/bg.png')}
+        >
+            <Image
+            style={styles.logo} 
+            source={require('../sources/logo.png')}/>
+
+            <Text style={styles.title} >WELCOME</Text>
+
+            <View style={styles.containerVd}>
+            <View style={styles.bodershadow}/>
+            
+            <View style={styles.bodervideo}>
+            <View style={styles.boderblack}>
+            <View>
+            <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={styles.video}
+      />
+      {/*{scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}*/}
+        </View>
+            </View>
+            </View>
+            </View>
+
+            <View style={styles.titleScan}>
+                <Image 
+                style={styles.iconScan} 
+                source={require('../sources/icon_scan.png')}/>
+                <Text style={styles.textScan} >Follow the arrow to scan card</Text>
+            </View>
+            <Pressable onPress={() => navigation.navigate('Er')}>
+                <Image 
+                style={styles.btn_scan} 
+                source={require('../sources/btn_scan.png')}/>
+            </Pressable>
+            <Pressable
+                style={styles.ctArrow}>
+                <Image 
+                style={styles.btn_arrow} 
+                source={require('../sources/vector.png')}/>
+                <Image 
+                style={styles.btn_arrow} 
+                source={require('../sources/vector.png')}/>
+            </Pressable>
+
+        </ImageBackground>
+        );
+      }
+        
     return (
         
         <ImageBackground 
@@ -47,11 +125,12 @@ const Welcome = (props) => {
                 source={require('../sources/icon_scan.png')}/>
                 <Text style={styles.textScan} >Follow the arrow to scan card</Text>
             </View>
-            <Pressable onPress={() => navigation.navigate('Er')}>
+            <Pressable onPress={askForCameraPermission}>
                 <Image 
                 style={styles.btn_scan} 
                 source={require('../sources/btn_scan.png')}/>
             </Pressable>
+        
             <Pressable
                 style={styles.ctArrow}>
                 <Image 

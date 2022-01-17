@@ -4,14 +4,7 @@ import { useFonts } from 'expo-font';
 import { Video } from 'expo-av';
 const Infomation = (props) => {
     const {navigation} = props
-    const [loaded] = useFonts({
-        Nexa: require('../../assets/fonts/SVN-Nexa.ttf'),
-        Nunito: require('../../assets/fonts/Nunito.ttf'),
-        Paytone: require('../../assets/fonts/PaytoneOne-Regular.ttf')
-      });
-      if (!loaded) {
-        return null;
-      }
+    
     return (
         
         <ImageBackground 

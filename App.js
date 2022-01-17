@@ -13,8 +13,16 @@ import OON from './src/Screen/OON';
 const Stack = createNativeStackNavigator();
 
 function App() {
+  onst [loaded] = useFonts({
+    Nexa: require('../../assets/fonts/SVN-Nexa.ttf'),
+    Nunito: require('../../assets/fonts/Nunito.ttf'),
+    Paytone: require('../../assets/fonts/PaytoneOne-Regular.ttf')
+  });
+  if (!loaded) {
+    return null;
+  }
   return (
-    
+    <Provider store={store}>
     <NavigationContainer >
       <Stack.Navigator screenOptions={{headerShown:false}}>
       
@@ -25,6 +33,7 @@ function App() {
         <Stack.Screen name="OON" component={OON} />
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 

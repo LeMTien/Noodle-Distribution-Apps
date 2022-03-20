@@ -31,7 +31,7 @@ const Error = (props) => {
                 source={require('../sources/icon_scan.png')}/>
                 <Text style={styles.textScan} >Follow the arrow to scan card</Text>
             </View>
-            <Pressable onPress={() => navigation.navigate('Information')}>
+            <Pressable onPress={() => navigation.navigate('Welcome')}>
                 <Image 
                 style={styles.btn_scan} 
                 source={require('../sources/btn_scan.png')}/>

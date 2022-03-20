@@ -3,24 +3,20 @@ import { View, Text, ImageBackground } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Welcome from './src/Screen/Welcome';
+import Scan from './src/Screen/Scan';
 import Information from './src/Screen/Information';
 import Done from './src/Screen/Done';
 import Er from './src/Screen/Er';
 import OON from './src/Screen/OON';
+import store from './src/redux/store';
+import { Provider } from 'react-redux';
 
 
 
 const Stack = createNativeStackNavigator();
 
 function App() {
-  onst [loaded] = useFonts({
-    Nexa: require('../../assets/fonts/SVN-Nexa.ttf'),
-    Nunito: require('../../assets/fonts/Nunito.ttf'),
-    Paytone: require('../../assets/fonts/PaytoneOne-Regular.ttf')
-  });
-  if (!loaded) {
-    return null;
-  }
+  
   return (
     <Provider store={store}>
     <NavigationContainer >
@@ -28,6 +24,7 @@ function App() {
       
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Information" component={Information} />
+        <Stack.Screen name="Scan" component={Scan} />
         <Stack.Screen name="Done" component={Done} />
         <Stack.Screen name="Er" component={Er} />
         <Stack.Screen name="OON" component={OON} />

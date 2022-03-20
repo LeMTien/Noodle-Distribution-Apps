@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ImageBackground, Image, Pressable } from 'react
 import { useFonts } from 'expo-font';
 import { Video } from 'expo-av';
 const Done = (props) => {
-    const {navigation} = props
+    const {navigation , route: { params: { id } }} = props
     
     return (
         
@@ -27,7 +27,7 @@ const Done = (props) => {
                 style={styles.iconHeart} 
                 source={require('../sources/icon_heart.png')}/>
             </View>
-            <Pressable style={styles.getNoodle} onPress={() => navigation.navigate('OON')}>
+            <Pressable style={styles.getNoodle} onPress={() => navigation.navigate('Information', {id: id})}>
                 <Image
                 style={styles.btngetNoodle}
                 source={require('../sources/btn_back.png')}/>

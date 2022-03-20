@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View, ImageBackground, Image, Pressable } from 'react-native'
 import { useFonts } from 'expo-font';
 import { Video } from 'expo-av';
-const Error = () => {
+const OON = () => {
 
     
     return (
@@ -28,7 +28,7 @@ const Error = () => {
     )
 }
 
-export default Error
+export default OON
 
 const styles = StyleSheet.create({
     container:{

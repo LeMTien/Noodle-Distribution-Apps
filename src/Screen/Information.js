@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, Text, View, ImageBackground, Image, Pressable, TouchableOpacity } from 'react-native'
-import { getAllNoodle, updateNoodle, getAllNoodleDataRealtime } from '../redux/API'
-import { useFonts } from 'expo-font';
+import { getAllNoodle } from '../redux/API'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as Actions from '../redux/action';
 import Database from '../database/Firebase'
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { UIActivityIndicator } from 'react-native-indicators';
+
 const Infomation = (props) => {
   const dispatch = useDispatch();
   const { navigation, actions, route: { params: { id } } } = props
@@ -18,7 +18,7 @@ const Infomation = (props) => {
   const [selectedHover2, setSelectedHover2] = useState(false);
   const [selectedHover3, setSelectedHover3] = useState(false);
   const [data, setData] = useState(null)
-  console.log('iddddddddd',id.length)
+
   useEffect(async () => {
     if (!data) {
       const data = await getAllNoodle(id);
@@ -27,7 +27,7 @@ const Infomation = (props) => {
     }
   }, [])
   useEffect(() => {
-    
+
     if (Hover) {
       let temp = 0;
       for (const [key, value] of Object.entries(Hover)) {
@@ -38,15 +38,13 @@ const Infomation = (props) => {
       setCount(temp);
     }
 
-    if(count==0){
+    if (count == 0) {
       navigation.navigate('OON')
     }
   }, [Hover])
 
-
-
-  const updateNoodle = async () => {
-    const docRef = doc(Database, 'noodles', 'PoPuNHklOvwj9ckDShNR')
+  const updateNoodle = async (id) => {
+    const docRef = doc(Database, 'noodles', id)
     await updateDoc(docRef, {
       nd1: selectedHover1 ? false : Hover.nd1,
       nd2: selectedHover2 ? false : Hover.nd2,
@@ -54,11 +52,7 @@ const Infomation = (props) => {
     })
   }
 
-
-
   const handleGetNoodles = () => {
-    // redux
-
     if (selectedHover1) {
       dispatch(actions.setNoodles1(false));
       setSelectedHover1(false);
@@ -73,9 +67,7 @@ const Infomation = (props) => {
       setSelectedHover3(false);
     }
 
-
-    updateNoodle()
-
+    updateNoodle(id)
     navigation.navigate('Done', { id: id });
   };
 
@@ -91,134 +83,134 @@ const Infomation = (props) => {
         source={require('../sources/logo.png')} />
 
       <Text style={styles.title} >INFORMATION </Text>
-      
 
 
 
-      {data ? (<View style={{flex:1}}>
+
+      {data ? (<View style={{ flex: 1 }}>
         <View style={styles.containerInfo}>
-        <View style={styles.bordershawdow} />
-        <View style={styles.borderinfo}>
-          <View style={styles.tableinfo}>
-            <Image
-              style={styles.avatar}
-              source={require('../sources/avatar.png')} />
-            <View style={styles.binfo}>
-              <Text style={styles.textinfo1}>Full Name:</Text>
-              <Text style={styles.textinfo1}>Birthday:</Text>
-              <Text style={styles.textinfo1}>Gender:</Text>
-              <Text style={styles.textinfo1}>Department:</Text>
-            </View>
-            <View style={styles.binfo}>
-              <Text style={styles.textinfo2}>Alice Mie</Text>
-              <Text style={styles.textinfo2}>12/10/1999</Text>
-              <Text style={styles.textinfo2}>Female</Text>
-              <Text style={styles.textinfo2}>Design</Text>
+          <View style={styles.bordershawdow} />
+          <View style={styles.borderinfo}>
+            <View style={styles.tableinfo}>
+              <Image
+                style={styles.avatar}
+                source={require('../sources/avatar.png')} />
+              <View style={styles.binfo}>
+                <Text style={styles.textinfo1}>Full Name:</Text>
+                <Text style={styles.textinfo1}>Birthday:</Text>
+                <Text style={styles.textinfo1}>Gender:</Text>
+                <Text style={styles.textinfo1}>Department:</Text>
+              </View>
+              <View style={styles.binfo}>
+                <Text style={styles.textinfo2}>Alice Mie</Text>
+                <Text style={styles.textinfo2}>12/10/1999</Text>
+                <Text style={styles.textinfo2}>Female</Text>
+                <Text style={styles.textinfo2}>Design</Text>
+              </View>
             </View>
           </View>
         </View>
-      </View>
-      <View style={styles.containerNoodle}>
-        <View>
+        <View style={styles.containerNoodle}>
+          <View>
 
-          {Hover.nd1 ? (
-            <TouchableOpacity
-              onPress={() => {
-                setSelectedHover1(!selectedHover1);
-              }}>
-              {selectedHover1 == true && (
+            {Hover.nd1 ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedHover1(!selectedHover1);
+                }}>
+                {selectedHover1 == true && (
+                  <Image
+                    style={styles.hover}
+                    source={require('../sources/hover.png')}
+                  />
+                )}
+                <Image style={styles.sizenoodle}
+                  source={require('../sources/noodle1.png')} />
+
+              </TouchableOpacity>
+            ) : (
+              <View>
                 <Image
-                  style={styles.hover}
-                  source={require('../sources/hover.png')}
+                  style={styles.sizenoodle}
+                  source={require('../sources/icon_unavailable.png')}
                 />
-              )}
-              <Image style={styles.sizenoodle}
-                source={require('../sources/noodle1.png')} />
+                <Image
+                  style={{ width: 80, height: 20, resizeMode: 'contain', position: 'absolute', bottom: 0, marginLeft: 10 }}
+                  source={require('../sources/text_unavailable.png')}
+                />
+              </View>
+            )}
+          </View>
 
-            </TouchableOpacity>
-          ) : (
-            <View>
-              <Image
-                style={styles.sizenoodle}
-                source={require('../sources/icon_unavailable.png')}
-              />
-              <Image
-                style={{ width: 80, height: 20, resizeMode: 'contain', position: 'absolute', bottom: 0, marginLeft: 10 }}
-                source={require('../sources/text_unavailable.png')}
-              />
-            </View>
-          )}
+          <View>
+            {Hover.nd2 ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedHover2(!selectedHover2);
+                }}>
+                {selectedHover2 == true && (
+                  <Image
+                    style={styles.hover}
+                    source={require('../sources/hover.png')}
+                  />
+                )}
+                <Image style={styles.sizenoodle}
+                  source={require('../sources/noodle2.png')} />
+              </TouchableOpacity>
+            ) : (
+              <View>
+                <Image
+                  style={styles.sizenoodle}
+                  source={require('../sources/icon_unavailable.png')}
+                />
+                <Image
+                  style={{ width: 80, height: 20, resizeMode: 'contain', position: 'absolute', bottom: 0, marginLeft: 10 }}
+                  source={require('../sources/text_unavailable.png')}
+                />
+              </View>
+            )}
+          </View>
+
+          <View>
+            {Hover.nd3 ? (
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedHover3(!selectedHover3);
+                }}>
+                {selectedHover3 == true && (
+                  <Image
+                    style={styles.hover}
+                    source={require('../sources/hover.png')}
+                  />
+                )}
+                <Image style={styles.sizenoodle}
+                  source={require('../sources/noodle3.png')} />
+              </TouchableOpacity>
+            ) : (
+              <View>
+                <Image
+                  style={styles.sizenoodle}
+                  source={require('../sources/icon_unavailable.png')}
+                />
+                <Image
+                  style={{ width: 80, height: 20, resizeMode: 'contain', position: 'absolute', bottom: 0, marginLeft: 10 }}
+                  source={require('../sources/text_unavailable.png')}
+                />
+              </View>
+            )}
+          </View>
+
         </View>
 
-        <View>
-          {Hover.nd2 ? (
-            <TouchableOpacity
-              onPress={() => {
-                setSelectedHover2(!selectedHover2);
-              }}>
-              {selectedHover2 == true && (
-                <Image
-                  style={styles.hover}
-                  source={require('../sources/hover.png')}
-                />
-              )}
-              <Image style={styles.sizenoodle}
-                source={require('../sources/noodle2.png')} />
-            </TouchableOpacity>
-          ) : (
-            <View>
-              <Image
-                style={styles.sizenoodle}
-                source={require('../sources/icon_unavailable.png')}
-              />
-              <Image
-                style={{ width: 80, height: 20, resizeMode: 'contain', position: 'absolute', bottom: 0, marginLeft: 10 }}
-                source={require('../sources/text_unavailable.png')}
-              />
-            </View>
-          )}
+        <View style={styles.quantily} >
+          <Text style={styles.numberquantily}>{count}</Text>
+          <Text style={styles.textquantily}> cups of noodles left this month</Text>
         </View>
-
-        <View>
-          {Hover.nd3 ? (
-            <TouchableOpacity
-              onPress={() => {
-                setSelectedHover3(!selectedHover3);
-              }}>
-              {selectedHover3 == true && (
-                <Image
-                  style={styles.hover}
-                  source={require('../sources/hover.png')}
-                />
-              )}
-              <Image style={styles.sizenoodle}
-                source={require('../sources/noodle3.png')} />
-            </TouchableOpacity>
-          ) : (
-            <View>
-              <Image
-                style={styles.sizenoodle}
-                source={require('../sources/icon_unavailable.png')}
-              />
-              <Image
-                style={{ width: 80, height: 20, resizeMode: 'contain', position: 'absolute', bottom: 0, marginLeft: 10 }}
-                source={require('../sources/text_unavailable.png')}
-              />
-            </View>
-          )}
-        </View>
-
-      </View>
-
-      <View style={styles.quantily} >
-        <Text style={styles.numberquantily}>{count}</Text>
-        <Text style={styles.textquantily}> cups of noodles left this month</Text>
-      </View>
-      </View>) : 
-      <View style={{flex:1}}>
-        <UIActivityIndicator size={50} color={'red'} />
+      </View>) :
+        <View style={{ flex: 1 }}>
+          <UIActivityIndicator size={50} color={'red'} />
         </View>}
-      
+
 
 
       {count > 0 ?
@@ -331,7 +323,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: '50%',
-    //backgroundColor:'blue',
     padding: 15
 
   },

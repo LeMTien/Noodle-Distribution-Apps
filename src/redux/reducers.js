@@ -6,7 +6,6 @@ const defaultState = {
   };
   
   const noodleReducers = (state = defaultState, action) => {
-    console.log('>>>>>>>>>>>>>dong 11 red',action)
     switch (action.type) {
       case 'SET_ALL':
         return  {

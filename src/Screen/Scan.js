@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, Pressable } from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 export default function App(props) {
-    const {navigation } = props
+  const { navigation } = props
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  console.log(scanned)
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -16,13 +15,12 @@ export default function App(props) {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    console.log('coddddddddddd',data.length)
-    if(data.length != 20 ){
+    if (data.length != 20) {
       navigation.navigate('Er')
-    }else{
-      navigation.navigate('Information',{ id: data})
+    } else {
+      navigation.navigate('Information', { id: data })
     }
-    
+
   };
 
   if (hasPermission === null) {
@@ -39,7 +37,7 @@ export default function App(props) {
         style={styles.clip}
       />
       {scanned && <Pressable style={styles.tryAgainPress} onPress={() => setScanned(false)}>
-                        <Text style={styles.tryAgainText}>Tap to scan again</Text></Pressable>}
+        <Text style={styles.tryAgainText}>Tap to scan again</Text></Pressable>}
     </View>
   );
 }
@@ -51,23 +49,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   clip: {
-    
+
     height: "100%",
-    marginBottom:50
-},
-tryAgainPress: {
-    position:'absolute',
-    bottom:0,
+    marginBottom: 50
+  },
+  tryAgainPress: {
+    position: 'absolute',
+    bottom: 0,
     backgroundColor: '#FFC900',
     borderRadius: 5,
     height: 100,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-},
+  },
 
-tryAgainText: {
+  tryAgainText: {
     color: 'white',
-    fontSize:30
-},
+    fontSize: 30
+  },
 });
